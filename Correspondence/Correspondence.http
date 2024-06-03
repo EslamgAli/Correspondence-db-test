@@ -1,0 +1,6 @@
+@Correspondence_HostAddress = http://localhost:5208
+
+GET {{Correspondence_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
