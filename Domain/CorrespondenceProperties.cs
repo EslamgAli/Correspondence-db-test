@@ -53,7 +53,10 @@ public partial class CorrespondenceContext
         modelBuilder.ApplyConfiguration(new WorkflowRoleProperties());
         modelBuilder.ApplyConfiguration(new WorkflowStepProperties());
         modelBuilder.ApplyConfiguration(new CorrespondenceActionsProperties());
-
+        modelBuilder.ApplyConfiguration(new TaskActionsProperties());
+        modelBuilder.ApplyConfiguration(new ExternalExceptionProperties());
+        modelBuilder.ApplyConfiguration(new CorrespondenceSourceProperties());
+        //CorrespondenceSourceProperties
         OnModelCreatingPartial(modelBuilder);
     }
 }

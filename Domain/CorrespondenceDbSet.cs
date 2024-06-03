@@ -89,4 +89,8 @@ public partial class CorrespondenceContext
 
     public virtual DbSet<WorkflowStep> WorkflowSteps { get; set; }
     public virtual DbSet<CorrespondenceAction> CorrespondenceActions { get; set; }
+    public virtual DbSet<TaskAction> TaskActions { get; set; }
+    public virtual DbSet<ExternalException> ExternalExceptions { get; set; }
+    public virtual DbSet<CorrespondenceSource> CorrespondenceSources { get; set; }
+    //
 }

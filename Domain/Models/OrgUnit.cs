@@ -24,4 +24,6 @@ public class OrgUnit : EntityBase
     public virtual ICollection<SentToOrgUnit> SentToOrgUnits { get; set; } = new List<SentToOrgUnit>();
 
     public virtual ICollection<UserOrgUnit> UserOrgUnits { get; set; } = new List<UserOrgUnit>();
+
+    public virtual ICollection<ExternalException> ExternalExceptions { get; set; }
 }

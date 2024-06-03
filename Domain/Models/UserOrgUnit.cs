@@ -193,8 +193,14 @@ public partial class UserOrgUnit : EntityBase
 
     public virtual ICollection<CorrespondenceAction> CorrespondenceActionsCreate { get; set; } = new List<CorrespondenceAction>();
     public virtual ICollection<CorrespondenceAction> CorrespondenceActionsUpdate { get; set; } = new List<CorrespondenceAction>();
+    public virtual ICollection<TaskAction> TaskActionsUpdate { get; set; } = new List<TaskAction>();
+    public virtual ICollection<TaskAction> TaskActionsCreate { get; set; } = new List<TaskAction>();
+    public virtual ICollection<ExternalException> ExternalExceptionUpdate { get; set; } = new List<ExternalException>();
+    public virtual ICollection<ExternalException> ExternalExceptionCreate { get; set; } = new List<ExternalException>();
 
-    //CorrespondenceActions
+    public virtual ICollection<CorrespondenceSource> CorrespondenceSourceUpdate { get; set; } = new List<CorrespondenceSource>();
+    public virtual ICollection<CorrespondenceSource> CorrespondenceSourceCreate { get; set; } = new List<CorrespondenceSource>();
+    //CorrespondenceSource
 
     #endregion
 }
