@@ -15,14 +15,14 @@ public class CorrespondenceProperties : EntityTypeConfigurationBase<Corresponden
         builder.Property(e => e.RefNumber).HasMaxLength(25);
         builder.Property(e => e.Subject).HasMaxLength(150);
 
-        builder.HasOne(e => e.CorrespondenceType)
-            .WithMany(e => e.Correspondences)
-            .HasForeignKey(e => e.CorrespondenceTypeId)
-            .OnDelete(DeleteBehavior.Restrict);
+        /* builder.HasOne(e => e.CorrespondenceType)
+             .WithMany(e => e.Correspondences)
+             .HasForeignKey(e => e.CorrespondenceTypeId)
+             .OnDelete(DeleteBehavior.Restrict);*/
 
-        builder.HasOne(e => e.DecisionType)
+        builder.HasOne(e => e.CorrespondenceSubType)
             .WithMany(e => e.Correspondences)
-            .HasForeignKey(e => e.DecisionTypeId)
+            .HasForeignKey(e => e.CorrespondenceSubTypeId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(e => e.Workflow)
@@ -30,12 +30,10 @@ public class CorrespondenceProperties : EntityTypeConfigurationBase<Corresponden
             .HasForeignKey(e => e.WorkflowId)
             .OnDelete(DeleteBehavior.Restrict);
 
-
         builder.HasOne(e => e.Template)
             .WithMany(e => e.Correspondences)
             .HasForeignKey(e => e.TemplateId)
             .OnDelete(DeleteBehavior.Restrict);
-
 
         builder.HasOne(e => e.ExternalUnit)
             .WithMany(e => e.Correspondences)
@@ -45,7 +43,6 @@ public class CorrespondenceProperties : EntityTypeConfigurationBase<Corresponden
         builder.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
             .HasForeignKey(d => d.ParentId)
             .HasConstraintName("FK_Correspondences_Correspondences");
-
 
         builder.HasOne(d => d.CreatedByUser)
             .WithMany(p => p.CorrespondenceCreate)

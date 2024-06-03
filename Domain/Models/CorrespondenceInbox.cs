@@ -1,6 +1,4 @@
 ﻿using Domain.Base;
-using System;
-using System.Collections.Generic;
 
 namespace Domain.Models;
 
@@ -15,13 +13,13 @@ public class CorrespondenceInbox : EntityBase
 
     public DateTime? SeenAt { get; set; }
 
-    public int? ActionId { get; set; }
+    public int? StatusId { get; set; }
 
     public int? ProcedureId { get; set; }
 
     public bool CanReplay { get; set; }
 
-    public virtual Status? Action { get; set; }
+    public virtual Status? Status { get; set; }
 
     public virtual Correspondence Correspondence { get; set; } = null!;
 

@@ -14,12 +14,12 @@ public class OrgUnit : EntityBase
 
     public int OrgUnitTypeId { get; set; }
 
-    public virtual ICollection<ApprovalAuthorityException> ApprovalAuthorityExceptions { get; set; } = new List<ApprovalAuthorityException>();
+    public virtual ICollection<AuthorityException> AuthorityExceptions { get; set; } = new List<AuthorityException>();
 
     public virtual ICollection<GroupDetail> GroupDetails { get; set; } = new List<GroupDetail>();
 
     public virtual OrgUnitType OrgUnitType { get; set; } = null!;
-    public virtual ICollection<CorrespondenceType> CorrespondenceTypes { get; set; } = new List<CorrespondenceType>();
+    //public virtual ICollection<CorrespondenceType> CorrespondenceTypes { get; set; } = new List<CorrespondenceType>();
 
     public virtual ICollection<SentToOrgUnit> SentToOrgUnits { get; set; } = new List<SentToOrgUnit>();
 

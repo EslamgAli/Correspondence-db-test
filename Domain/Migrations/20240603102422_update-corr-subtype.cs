@@ -9,7 +9,7 @@ using Microsoft.SqlServer.Types;
 namespace Domain.Migrations
 {
     /// <inheritdoc />
-    public partial class testuser : Migration
+    public partial class updatecorrsubtype : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -88,6 +88,24 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CorrespondenceActions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArabicName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EnglishName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CorrespondenceActions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CorrespondenceInbox",
                 columns: table => new
                 {
@@ -97,7 +115,7 @@ namespace Domain.Migrations
                     UserOrgUnitId = table.Column<int>(type: "int", nullable: false),
                     FromUserOrgUnitId = table.Column<int>(type: "int", nullable: false),
                     SeenAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ActionId = table.Column<int>(type: "int", nullable: true),
+                    StatusId = table.Column<int>(type: "int", nullable: true),
                     ProcedureId = table.Column<int>(type: "int", nullable: true),
                     CanReplay = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
@@ -121,7 +139,6 @@ namespace Domain.Migrations
                     RefNumber = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
                     Subject = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: true),
-                    CorrespondenceTypeId = table.Column<int>(type: "int", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ApprovalAuthorityExceptionId = table.Column<int>(type: "int", nullable: true),
                     SendToAllEmp = table.Column<bool>(type: "bit", nullable: false),
@@ -130,7 +147,7 @@ namespace Domain.Migrations
                     TemplateId = table.Column<int>(type: "int", nullable: false),
                     ExternalUnitId = table.Column<int>(type: "int", nullable: true),
                     ReceivingDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    DecisionTypeId = table.Column<int>(type: "int", nullable: true),
+                    CorrespondenceSubTypeId = table.Column<int>(type: "int", nullable: false),
                     IsPublicDecision = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
@@ -174,6 +191,27 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CorrespondenceSubTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NameAr = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    NameEn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TimeFrame = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    CorrespondenceTypeId = table.Column<int>(type: "int", nullable: false),
+                    CreatedBy = table.Column<int>(type: "int", nullable: true),
+                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CorrespondenceSubTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CorrespondenceTags",
                 columns: table => new
                 {
@@ -205,8 +243,8 @@ namespace Domain.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NameAr = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     NameEn = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    IsExternalUnits = table.Column<bool>(type: "bit", nullable: false),
-                    OrgUnitResponsibilityId = table.Column<int>(type: "int", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    TimeFrame = table.Column<int>(type: "int", nullable: true),
                     CreatedBy = table.Column<int>(type: "int", nullable: true),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -238,24 +276,6 @@ namespace Domain.Migrations
                         column: x => x.CorrespondenceId,
                         principalTable: "Correspondences",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DecisionTypes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NameAr = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    NameEn = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedBy = table.Column<int>(type: "int", nullable: true),
-                    UpdatedBy = table.Column<int>(type: "int", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DecisionTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -370,6 +390,7 @@ namespace Domain.Migrations
                     Id = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     UserOrgUnitId = table.Column<int>(type: "int", nullable: false),
+                    GroupTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -718,14 +739,13 @@ namespace Domain.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TemplateCorresponednceTypes",
+                name: "TemplateCorresponednceSubTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CorresponednceTypeId = table.Column<int>(type: "int", nullable: false),
                     TemplateId = table.Column<int>(type: "int", nullable: false),
-                    DecisionTypeId = table.Column<int>(type: "int", nullable: false),
+                    CorrespondenceSubTypeId = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<int>(type: "int", nullable: false),
                     UpdatedBy = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -733,16 +753,11 @@ namespace Domain.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TemplateCorresponednceTypes", x => x.Id);
+                    table.PrimaryKey("PK_TemplateCorresponednceSubTypes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TemplateCorresponednceTypes_CorrespondenceTypes",
-                        column: x => x.CorresponednceTypeId,
-                        principalTable: "CorrespondenceTypes",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_TemplateCorresponednceTypes_DecisionTypes",
-                        column: x => x.DecisionTypeId,
-                        principalTable: "DecisionTypes",
+                        name: "FK_TemplateCorresponednceSubTypes_CorrespondenceTypes",
+                        column: x => x.CorrespondenceSubTypeId,
+                        principalTable: "CorrespondenceSubTypes",
                         principalColumn: "Id");
                 });
 
@@ -1134,26 +1149,13 @@ namespace Domain.Migrations
 
             migrationBuilder.InsertData(
                 table: "CorrespondenceTypes",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "IsExternalUnits", "NameAr", "NameEn", "OrgUnitResponsibilityId", "UpdatedAt", "UpdatedBy" },
+                columns: new[] { "Id", "CreatedAt", "CreatedBy", "NameAr", "NameEn", "Status", "TimeFrame", "UpdatedAt", "UpdatedBy" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, false, "وارد داخلي", "وارد داخلي", null, null, null },
-                    { 2, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, false, "صادر داخلي", "صادر داخلي", null, null, null },
-                    { 3, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, true, "وارد خارجي", "وارد خارجي", null, null, null },
-                    { 4, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, true, "صادر خارجي", "صادر خارجي", null, null, null },
-                    { 5, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, false, "قرارت", "قرارت", null, null, null },
-                    { 6, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, false, "تعاميم", "تعاميم", null, null, null },
-                    { 7, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, false, "سجل عام", "سجل عام", null, null, null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "DecisionTypes",
-                columns: new[] { "Id", "CreatedAt", "CreatedBy", "NameAr", "NameEn", "UpdatedAt", "UpdatedBy" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "جزاء", "جزاء", null, null },
-                    { 2, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "خصم", "خصم", null, null },
-                    { 3, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "ترقيه", "ترقيه", null, null }
+                    { 1, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, " داخلي", " Internal", null, null, null, null },
+                    { 2, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, " خارجي", " External", null, null, null, null },
+                    { 5, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "القرار", "Decision", null, null, null, null },
+                    { 6, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "تعميم", "تعاميم", null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -1237,6 +1239,16 @@ namespace Domain.Migrations
                     { 1, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "هيكل تنظيمي", "Hierarchy orgunit", null, null },
                     { 2, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "مخصص", "ad-hock", null, null },
                     { 3, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "تسلسلي", "Sequential", null, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "CorrespondenceSubTypes",
+                columns: new[] { "Id", "CorrespondenceTypeId", "CreatedAt", "CreatedBy", "NameAr", "NameEn", "Status", "TimeFrame", "UpdatedAt", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1, 5, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "جزاء", "جزاء", null, null, null, null },
+                    { 2, 5, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "خصم", "خصم", null, null, null, null },
+                    { 3, 5, new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032), null, "ترقيه", "ترقيه", null, null, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -1328,9 +1340,14 @@ namespace Domain.Migrations
                 column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CorrespondenceInbox_ActionId",
-                table: "CorrespondenceInbox",
-                column: "ActionId");
+                name: "IX_CorrespondenceActions_CreatedBy",
+                table: "CorrespondenceActions",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CorrespondenceActions_UpdatedBy",
+                table: "CorrespondenceActions",
+                column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CorrespondenceInbox_CorrespondenceId",
@@ -1353,6 +1370,11 @@ namespace Domain.Migrations
                 column: "ProcedureId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CorrespondenceInbox_StatusId",
+                table: "CorrespondenceInbox",
+                column: "StatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CorrespondenceInbox_UpdatedBy",
                 table: "CorrespondenceInbox",
                 column: "UpdatedBy");
@@ -1363,19 +1385,14 @@ namespace Domain.Migrations
                 column: "UserOrgUnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Correspondences_CorrespondenceTypeId",
+                name: "IX_Correspondences_CorrespondenceSubTypeId",
                 table: "Correspondences",
-                column: "CorrespondenceTypeId");
+                column: "CorrespondenceSubTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Correspondences_CreatedBy",
                 table: "Correspondences",
                 column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Correspondences_DecisionTypeId",
-                table: "Correspondences",
-                column: "DecisionTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Correspondences_ExternalUnitId",
@@ -1438,6 +1455,21 @@ namespace Domain.Migrations
                 column: "UserOrgUnitId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CorrespondenceSubTypes_CorrespondenceTypeId",
+                table: "CorrespondenceSubTypes",
+                column: "CorrespondenceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CorrespondenceSubTypes_CreatedBy",
+                table: "CorrespondenceSubTypes",
+                column: "CreatedBy");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CorrespondenceSubTypes_UpdatedBy",
+                table: "CorrespondenceSubTypes",
+                column: "UpdatedBy");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CorrespondenceTags_CorrespondenceId",
                 table: "CorrespondenceTags",
                 column: "CorrespondenceId");
@@ -1463,11 +1495,6 @@ namespace Domain.Migrations
                 column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CorrespondenceTypes_OrgUnitResponsibilityId",
-                table: "CorrespondenceTypes",
-                column: "OrgUnitResponsibilityId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CorrespondenceTypes_UpdatedBy",
                 table: "CorrespondenceTypes",
                 column: "UpdatedBy");
@@ -1491,16 +1518,6 @@ namespace Domain.Migrations
                 name: "IX_CorrespondenceWorkflowSteps_WorkfloStepId",
                 table: "CorrespondenceWorkflowSteps",
                 column: "WorkfloStepId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DecisionTypes_CreatedBy",
-                table: "DecisionTypes",
-                column: "CreatedBy");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DecisionTypes_UpdatedBy",
-                table: "DecisionTypes",
-                column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Delegates_CreatedBy",
@@ -1833,28 +1850,23 @@ namespace Domain.Migrations
                 column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TemplateCorresponednceTypes_CorresponednceTypeId",
-                table: "TemplateCorresponednceTypes",
-                column: "CorresponednceTypeId");
+                name: "IX_TemplateCorresponednceSubTypes_CorrespondenceSubTypeId",
+                table: "TemplateCorresponednceSubTypes",
+                column: "CorrespondenceSubTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TemplateCorresponednceTypes_CreatedBy",
-                table: "TemplateCorresponednceTypes",
+                name: "IX_TemplateCorresponednceSubTypes_CreatedBy",
+                table: "TemplateCorresponednceSubTypes",
                 column: "CreatedBy");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TemplateCorresponednceTypes_DecisionTypeId",
-                table: "TemplateCorresponednceTypes",
-                column: "DecisionTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TemplateCorresponednceTypes_TemplateId",
-                table: "TemplateCorresponednceTypes",
+                name: "IX_TemplateCorresponednceSubTypes_TemplateId",
+                table: "TemplateCorresponednceSubTypes",
                 column: "TemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TemplateCorresponednceTypes_UpdatedBy",
-                table: "TemplateCorresponednceTypes",
+                name: "IX_TemplateCorresponednceSubTypes_UpdatedBy",
+                table: "TemplateCorresponednceSubTypes",
                 column: "UpdatedBy");
 
             migrationBuilder.CreateIndex(
@@ -2166,9 +2178,25 @@ namespace Domain.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_CorrespondenceActions_UserOrgUnit_CreatedBy",
+                table: "CorrespondenceActions",
+                column: "CreatedBy",
+                principalTable: "UserOrgUnit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CorrespondenceActions_UserOrgUnit_UpdatedBy",
+                table: "CorrespondenceActions",
+                column: "UpdatedBy",
+                principalTable: "UserOrgUnit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_CorrespondenceInbox_Actions",
                 table: "CorrespondenceInbox",
-                column: "ActionId",
+                column: "StatusId",
                 principalTable: "Statuses",
                 principalColumn: "Id");
 
@@ -2217,18 +2245,10 @@ namespace Domain.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Correspondences_CorrespondenceTypes_CorrespondenceTypeId",
+                name: "FK_Correspondences_CorrespondenceSubTypes_CorrespondenceSubTypeId",
                 table: "Correspondences",
-                column: "CorrespondenceTypeId",
-                principalTable: "CorrespondenceTypes",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Correspondences_DecisionTypes_DecisionTypeId",
-                table: "Correspondences",
-                column: "DecisionTypeId",
-                principalTable: "DecisionTypes",
+                column: "CorrespondenceSubTypeId",
+                principalTable: "CorrespondenceSubTypes",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -2317,6 +2337,30 @@ namespace Domain.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_CorrespondenceSubTypes_CorrespondenceTypes_CorrespondenceTypeId",
+                table: "CorrespondenceSubTypes",
+                column: "CorrespondenceTypeId",
+                principalTable: "CorrespondenceTypes",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CorrespondenceSubTypes_UserOrgUnit_CreatedBy",
+                table: "CorrespondenceSubTypes",
+                column: "CreatedBy",
+                principalTable: "UserOrgUnit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_CorrespondenceSubTypes_UserOrgUnit_UpdatedBy",
+                table: "CorrespondenceSubTypes",
+                column: "UpdatedBy",
+                principalTable: "UserOrgUnit",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_CorrespondenceTags_Tags_TagId",
                 table: "CorrespondenceTags",
                 column: "TagId",
@@ -2339,13 +2383,6 @@ namespace Domain.Migrations
                 principalTable: "UserOrgUnit",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_CorrespondenceTypes_OrgUnits_OrgUnitResponsibilityId",
-                table: "CorrespondenceTypes",
-                column: "OrgUnitResponsibilityId",
-                principalTable: "OrgUnits",
-                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_CorrespondenceTypes_UserOrgUnit_CreatedBy",
@@ -2385,22 +2422,6 @@ namespace Domain.Migrations
                 column: "WorkfloStepId",
                 principalTable: "WorkflowSteps",
                 principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DecisionTypes_UserOrgUnit_CreatedBy",
-                table: "DecisionTypes",
-                column: "CreatedBy",
-                principalTable: "UserOrgUnit",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DecisionTypes_UserOrgUnit_UpdatedBy",
-                table: "DecisionTypes",
-                column: "UpdatedBy",
-                principalTable: "UserOrgUnit",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Delegates_UserOrgUnit",
@@ -2850,23 +2871,23 @@ namespace Domain.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TemplateCorresponednceTypes_Templates",
-                table: "TemplateCorresponednceTypes",
+                name: "FK_TemplateCorresponednceSubTypes_Templates",
+                table: "TemplateCorresponednceSubTypes",
                 column: "TemplateId",
                 principalTable: "Templates",
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TemplateCorresponednceTypes_UserOrgUnit_CreatedBy",
-                table: "TemplateCorresponednceTypes",
+                name: "FK_TemplateCorresponednceSubTypes_UserOrgUnit_CreatedBy",
+                table: "TemplateCorresponednceSubTypes",
                 column: "CreatedBy",
                 principalTable: "UserOrgUnit",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_TemplateCorresponednceTypes_UserOrgUnit_UpdatedBy",
-                table: "TemplateCorresponednceTypes",
+                name: "FK_TemplateCorresponednceSubTypes_UserOrgUnit_UpdatedBy",
+                table: "TemplateCorresponednceSubTypes",
                 column: "UpdatedBy",
                 principalTable: "UserOrgUnit",
                 principalColumn: "Id",
@@ -3028,6 +3049,9 @@ namespace Domain.Migrations
                 name: "Attachements");
 
             migrationBuilder.DropTable(
+                name: "CorrespondenceActions");
+
+            migrationBuilder.DropTable(
                 name: "CorrespondenceInbox");
 
             migrationBuilder.DropTable(
@@ -3061,7 +3085,7 @@ namespace Domain.Migrations
                 name: "SentToUserOrgUnits");
 
             migrationBuilder.DropTable(
-                name: "TemplateCorresponednceTypes");
+                name: "TemplateCorresponednceSubTypes");
 
             migrationBuilder.DropTable(
                 name: "TemplateOrgUnits");
@@ -3109,10 +3133,7 @@ namespace Domain.Migrations
                 name: "PrivilegeCategories");
 
             migrationBuilder.DropTable(
-                name: "CorrespondenceTypes");
-
-            migrationBuilder.DropTable(
-                name: "DecisionTypes");
+                name: "CorrespondenceSubTypes");
 
             migrationBuilder.DropTable(
                 name: "ExternalUnits");
@@ -3122,6 +3143,9 @@ namespace Domain.Migrations
 
             migrationBuilder.DropTable(
                 name: "SystemModules");
+
+            migrationBuilder.DropTable(
+                name: "CorrespondenceTypes");
 
             migrationBuilder.DropTable(
                 name: "ExternalUnitTypes");

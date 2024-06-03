@@ -17,12 +17,12 @@ public class Correspondence : EntityBase<Guid>
 
     public string? Comment { get; set; }
 
-    public int CorrespondenceTypeId { get; set; }
-    public CorrespondenceType CorrespondenceType { get; set; }
+    // public int CorrespondenceTypeId { get; set; }
+    //   public CorrespondenceType CorrespondenceType { get; set; }
 
     public string? FilePath { get; set; }
 
-    public int? ApprovalAuthorityExceptionId { get; set; }
+    public int? ApprovalAuthorityExceptionId { get; set; }///
 
     public bool SendToAllEmp { get; set; }
 
@@ -38,8 +38,9 @@ public class Correspondence : EntityBase<Guid>
     public ExternalUnit? ExternalUnit { get; set; }
     public DateTime? ReceivingDate { get; set; }
 
-    // public int? DecisionTypeId { get; set; }
-    // public DecisionType? DecisionType { get; set; }
+    public int CorrespondenceSubTypeId { get; set; }
+    public CorrespondenceSubType CorrespondenceSubType { get; set; }
+
     public bool IsPublicDecision { get; set; }
 
     public virtual ICollection<Archive> Archives { get; set; } = new List<Archive>();

@@ -4,7 +4,7 @@ using Domain.Base;
 
 namespace Domain.Models;
 
-public class ApprovalAuthorityException : EntityBase
+public class AuthorityException : EntityBase
 {
 
     public int UserOrgUnitId { get; set; }

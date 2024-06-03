@@ -8,7 +8,7 @@ public partial class CorrespondenceContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new StatusProperties());
-        modelBuilder.ApplyConfiguration(new ApprovalAuthorityExceptionProperties());
+        modelBuilder.ApplyConfiguration(new AuthorityExceptionProperties());
         modelBuilder.ApplyConfiguration(new ArchiveProperties());
         modelBuilder.ApplyConfiguration(new AttachementProperties());
         modelBuilder.ApplyConfiguration(new AttachementTypeProperties());
@@ -18,7 +18,7 @@ public partial class CorrespondenceContext
         modelBuilder.ApplyConfiguration(new CorrespondenceTagProperties());
         modelBuilder.ApplyConfiguration(new CorrespondenceWorkflowStepProperties());
         modelBuilder.ApplyConfiguration(new CorrespondencesOutboxProperties());
-        modelBuilder.ApplyConfiguration(new DecisionTypeProperties());
+        modelBuilder.ApplyConfiguration(new CorrespondenceSubTypeProperties());
         modelBuilder.ApplyConfiguration(new DelegateProperties());
         modelBuilder.ApplyConfiguration(new DraftProperties());
         modelBuilder.ApplyConfiguration(new ExternalUnitProperties());
@@ -40,7 +40,7 @@ public partial class CorrespondenceContext
         modelBuilder.ApplyConfiguration(new SubexternalUnitProperties());
         modelBuilder.ApplyConfiguration(new SystemModuleProperties());
         modelBuilder.ApplyConfiguration(new TemplateProperties());
-        modelBuilder.ApplyConfiguration(new TemplateCorresponednceTypeProperties());
+        modelBuilder.ApplyConfiguration(new TemplateCorresponednceSubTypeProperties());
         modelBuilder.ApplyConfiguration(new TemplateOrgUnitProperties());
         modelBuilder.ApplyConfiguration(new TrackerProperties());
         modelBuilder.ApplyConfiguration(new TrackerStatusProperties());
@@ -52,6 +52,7 @@ public partial class CorrespondenceContext
         modelBuilder.ApplyConfiguration(new WorkflowTypeProperties());
         modelBuilder.ApplyConfiguration(new WorkflowRoleProperties());
         modelBuilder.ApplyConfiguration(new WorkflowStepProperties());
+        modelBuilder.ApplyConfiguration(new CorrespondenceActionsProperties());
 
         OnModelCreatingPartial(modelBuilder);
     }

@@ -8,7 +8,7 @@ public partial class CorrespondenceContext
 {
     public virtual DbSet<Status> Statuses { get; set; }
 
-    public virtual DbSet<ApprovalAuthorityException> ApprovalAuthorityExceptions { get; set; }
+    public virtual DbSet<AuthorityException> AuthorityExceptions { get; set; }
 
     public virtual DbSet<Archive> Archives { get; set; }
 
@@ -28,7 +28,7 @@ public partial class CorrespondenceContext
 
     public virtual DbSet<CorrespondencesOutbox> CorrespondencesOutboxes { get; set; }
 
-    public virtual DbSet<CorrespondenceSubType> DecisionTypes { get; set; }
+    public virtual DbSet<CorrespondenceSubType> CorrespondenceSubTypes { get; set; }
 
     public virtual DbSet<Delegate> Delegates { get; set; }
 
@@ -68,7 +68,7 @@ public partial class CorrespondenceContext
 
     public virtual DbSet<Template> Templates { get; set; }
 
-    public virtual DbSet<TemplateCorresponednceType> TemplateCorresponednceTypes { get; set; }
+    public virtual DbSet<TemplateCorresponednceSubType> TemplateCorresponednceSubTypes { get; set; }
 
     public virtual DbSet<TemplateOrgUnit> TemplateOrgUnits { get; set; }
 
@@ -88,4 +88,5 @@ public partial class CorrespondenceContext
     public virtual DbSet<WorkflowRole> WorkflowRoles { get; set; }
 
     public virtual DbSet<WorkflowStep> WorkflowSteps { get; set; }
+    public virtual DbSet<CorrespondenceAction> CorrespondenceActions { get; set; }
 }

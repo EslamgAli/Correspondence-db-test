@@ -18,7 +18,7 @@ public partial class UserOrgUnit : EntityBase
 
     public bool IsActive { get; set; }
 
-    public virtual ICollection<ApprovalAuthorityException> ApprovalAuthorityExceptions { get; set; } = new List<ApprovalAuthorityException>();
+    public virtual ICollection<AuthorityException> AuthorityExceptions { get; set; } = new List<AuthorityException>();
 
     public virtual ICollection<Archive> Archives { get; set; } = new List<Archive>();
 
@@ -56,8 +56,8 @@ public partial class UserOrgUnit : EntityBase
 
     #region Audit 
 
-    public virtual ICollection<ApprovalAuthorityException> ApprovalAuthorityExceptionCreate { get; set; } = new List<ApprovalAuthorityException>();
-    public virtual ICollection<ApprovalAuthorityException> ApprovalAuthorityExceptionUpdate { get; set; } = new List<ApprovalAuthorityException>();
+    public virtual ICollection<AuthorityException> AuthorityExceptionCreate { get; set; } = new List<AuthorityException>();
+    public virtual ICollection<AuthorityException> AuthorityExceptionUpdate { get; set; } = new List<AuthorityException>();
 
     public virtual ICollection<Archive> ArchiveCreate { get; set; } = new List<Archive>();
     public virtual ICollection<Archive> ArchiveUpdate { get; set; } = new List<Archive>();
@@ -125,8 +125,8 @@ public partial class UserOrgUnit : EntityBase
     public virtual ICollection<SubexternalUnit> SubexternalUnitCreate { get; set; } = new List<SubexternalUnit>();
     public virtual ICollection<SubexternalUnit> SubexternalUnitUpdate { get; set; } = new List<SubexternalUnit>();
 
-    public virtual ICollection<TemplateCorresponednceType> TemplateCorresponednceTypeCreate { get; set; } = new List<TemplateCorresponednceType>();
-    public virtual ICollection<TemplateCorresponednceType> TemplateCorresponednceTypeUpdate { get; set; } = new List<TemplateCorresponednceType>();
+    public virtual ICollection<TemplateCorresponednceSubType> TemplateCorresponednceTypeCreate { get; set; } = new List<TemplateCorresponednceSubType>();
+    public virtual ICollection<TemplateCorresponednceSubType> TemplateCorresponednceTypeUpdate { get; set; } = new List<TemplateCorresponednceSubType>();
 
     public virtual ICollection<TemplateOrgUnit> TemplateOrgUnitCreate { get; set; } = new List<TemplateOrgUnit>();
     public virtual ICollection<TemplateOrgUnit> TemplateOrgUnitUpdate { get; set; } = new List<TemplateOrgUnit>();
@@ -155,8 +155,8 @@ public partial class UserOrgUnit : EntityBase
     public virtual ICollection<Draft> DraftCreate { get; set; } = new List<Draft>();
     public virtual ICollection<Draft> DraftUpdate { get; set; } = new List<Draft>();
 
-    public virtual ICollection<CorrespondenceSubType> DecisionTypeCreate { get; set; } = new List<CorrespondenceSubType>();
-    public virtual ICollection<CorrespondenceSubType> DecisionTypeUpdate { get; set; } = new List<CorrespondenceSubType>();
+    public virtual ICollection<CorrespondenceSubType> CorrespondenceSubTypeCreate { get; set; } = new List<CorrespondenceSubType>();
+    public virtual ICollection<CorrespondenceSubType> CorrespondenceSubTypeUpdate { get; set; } = new List<CorrespondenceSubType>();
 
     public virtual ICollection<WorkflowRole> WorkflowRoleCreate { get; set; } = new List<WorkflowRole>();
     public virtual ICollection<WorkflowRole> WorkflowRoleUpdate { get; set; } = new List<WorkflowRole>();
@@ -191,7 +191,10 @@ public partial class UserOrgUnit : EntityBase
     public virtual ICollection<Tag> TagCreate { get; set; } = new List<Tag>();
     public virtual ICollection<Tag> TagUpdate { get; set; } = new List<Tag>();
 
+    public virtual ICollection<CorrespondenceAction> CorrespondenceActionsCreate { get; set; } = new List<CorrespondenceAction>();
+    public virtual ICollection<CorrespondenceAction> CorrespondenceActionsUpdate { get; set; } = new List<CorrespondenceAction>();
 
+    //CorrespondenceActions
 
     #endregion
 }

@@ -13,8 +13,8 @@ using Microsoft.SqlServer.Types;
 namespace Domain.Migrations
 {
     [DbContext(typeof(CorrespondenceContext))]
-    [Migration("20240603065722_test-user")]
-    partial class testuser
+    [Migration("20240603102422_update-corr-subtype")]
+    partial class updatecorrsubtype
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -218,7 +218,7 @@ namespace Domain.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<int>("CorrespondenceTypeId")
+                    b.Property<int>("CorrespondenceSubTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -226,9 +226,6 @@ namespace Domain.Migrations
 
                     b.Property<int?>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DecisionTypeId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ExternalUnitId")
@@ -283,11 +280,9 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CorrespondenceTypeId");
+                    b.HasIndex("CorrespondenceSubTypeId");
 
                     b.HasIndex("CreatedBy");
-
-                    b.HasIndex("DecisionTypeId");
 
                     b.HasIndex("ExternalUnitId");
 
@@ -302,7 +297,7 @@ namespace Domain.Migrations
                     b.ToTable("Correspondences");
                 });
 
-            modelBuilder.Entity("Domain.Models.CorrespondenceInbox", b =>
+            modelBuilder.Entity("Domain.Models.CorrespondenceAction", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -310,8 +305,44 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ActionId")
+                    b.Property<string>("ArabicName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
+
+                    b.Property<string>("EnglishName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("CorrespondenceActions");
+                });
+
+            modelBuilder.Entity("Domain.Models.CorrespondenceInbox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("CanReplay")
                         .HasColumnType("bit");
@@ -335,6 +366,9 @@ namespace Domain.Migrations
                     b.Property<DateTime?>("SeenAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -346,8 +380,6 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActionId");
-
                     b.HasIndex("CorrespondenceId");
 
                     b.HasIndex("CreatedBy");
@@ -356,11 +388,89 @@ namespace Domain.Migrations
 
                     b.HasIndex("ProcedureId");
 
+                    b.HasIndex("StatusId");
+
                     b.HasIndex("UpdatedBy");
 
                     b.HasIndex("UserOrgUnitId");
 
                     b.ToTable("CorrespondenceInbox", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Models.CorrespondenceSubType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CorrespondenceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NameAr")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("NameEn")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TimeFrame")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CorrespondenceTypeId");
+
+                    b.HasIndex("CreatedBy");
+
+                    b.HasIndex("UpdatedBy");
+
+                    b.ToTable("CorrespondenceSubTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CorrespondenceTypeId = 5,
+                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
+                            NameAr = "جزاء",
+                            NameEn = "جزاء"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CorrespondenceTypeId = 5,
+                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
+                            NameAr = "خصم",
+                            NameEn = "خصم"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CorrespondenceTypeId = 5,
+                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
+                            NameAr = "ترقيه",
+                            NameEn = "ترقيه"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.CorrespondenceTag", b =>
@@ -417,9 +527,6 @@ namespace Domain.Migrations
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsExternalUnits")
-                        .HasColumnType("bit");
-
                     b.Property<string>("NameAr")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -430,7 +537,10 @@ namespace Domain.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("OrgUnitResponsibilityId")
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TimeFrame")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -443,8 +553,6 @@ namespace Domain.Migrations
 
                     b.HasIndex("CreatedBy");
 
-                    b.HasIndex("OrgUnitResponsibilityId");
-
                     b.HasIndex("UpdatedBy");
 
                     b.ToTable("CorrespondenceTypes");
@@ -454,57 +562,29 @@ namespace Domain.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = false,
-                            NameAr = "وارد داخلي",
-                            NameEn = "وارد داخلي"
+                            NameAr = " داخلي",
+                            NameEn = " Internal"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = false,
-                            NameAr = "صادر داخلي",
-                            NameEn = "صادر داخلي"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = true,
-                            NameAr = "وارد خارجي",
-                            NameEn = "وارد خارجي"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = true,
-                            NameAr = "صادر خارجي",
-                            NameEn = "صادر خارجي"
+                            NameAr = " خارجي",
+                            NameEn = " External"
                         },
                         new
                         {
                             Id = 5,
                             CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = false,
-                            NameAr = "قرارت",
-                            NameEn = "قرارت"
+                            NameAr = "القرار",
+                            NameEn = "Decision"
                         },
                         new
                         {
                             Id = 6,
                             CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = false,
-                            NameAr = "تعاميم",
+                            NameAr = "تعميم",
                             NameEn = "تعاميم"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            IsExternalUnits = false,
-                            NameAr = "سجل عام",
-                            NameEn = "سجل عام"
                         });
                 });
 
@@ -601,68 +681,6 @@ namespace Domain.Migrations
                     b.HasIndex("UserOrgUnitId");
 
                     b.ToTable("CorrespondencesOutbox", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Models.DecisionType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NameAr")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("NameEn")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
-
-                    b.Property<int?>("UpdatedBy")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedBy");
-
-                    b.HasIndex("UpdatedBy");
-
-                    b.ToTable("DecisionTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            NameAr = "جزاء",
-                            NameEn = "جزاء"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            NameAr = "خصم",
-                            NameEn = "خصم"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(2024, 5, 22, 11, 8, 24, 765, DateTimeKind.Utc).AddTicks(2032),
-                            NameAr = "ترقيه",
-                            NameEn = "ترقيه"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Delegate", b =>
@@ -883,6 +901,9 @@ namespace Domain.Migrations
 
                     b.Property<int?>("CreatedBy")
                         .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -1816,7 +1837,7 @@ namespace Domain.Migrations
                     b.ToTable("Templates");
                 });
 
-            modelBuilder.Entity("Domain.Models.TemplateCorresponednceType", b =>
+            modelBuilder.Entity("Domain.Models.TemplateCorresponednceSubType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1824,7 +1845,7 @@ namespace Domain.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CorresponednceTypeId")
+                    b.Property<int>("CorrespondenceSubTypeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -1832,9 +1853,6 @@ namespace Domain.Migrations
 
                     b.Property<int?>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int>("DecisionTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("TemplateId")
@@ -1848,17 +1866,15 @@ namespace Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CorresponednceTypeId");
+                    b.HasIndex("CorrespondenceSubTypeId");
 
                     b.HasIndex("CreatedBy");
-
-                    b.HasIndex("DecisionTypeId");
 
                     b.HasIndex("TemplateId");
 
                     b.HasIndex("UpdatedBy");
 
-                    b.ToTable("TemplateCorresponednceTypes");
+                    b.ToTable("TemplateCorresponednceSubTypes");
                 });
 
             modelBuilder.Entity("Domain.Models.TemplateOrgUnit", b =>
@@ -2602,9 +2618,9 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Models.Correspondence", b =>
                 {
-                    b.HasOne("Domain.Models.CorrespondenceType", "CorrespondenceType")
+                    b.HasOne("Domain.Models.CorrespondenceSubType", "CorrespondenceSubType")
                         .WithMany("Correspondences")
-                        .HasForeignKey("CorrespondenceTypeId")
+                        .HasForeignKey("CorrespondenceSubTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -2613,11 +2629,6 @@ namespace Domain.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Domain.Models.DecisionType", "DecisionType")
-                        .WithMany("Correspondences")
-                        .HasForeignKey("DecisionTypeId")
-                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Models.ExternalUnit", "ExternalUnit")
                         .WithMany("Correspondences")
@@ -2645,11 +2656,9 @@ namespace Domain.Migrations
                         .HasForeignKey("WorkflowId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("CorrespondenceType");
+                    b.Navigation("CorrespondenceSubType");
 
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("DecisionType");
 
                     b.Navigation("ExternalUnit");
 
@@ -2662,13 +2671,25 @@ namespace Domain.Migrations
                     b.Navigation("Workflow");
                 });
 
+            modelBuilder.Entity("Domain.Models.CorrespondenceAction", b =>
+                {
+                    b.HasOne("Domain.Models.UserOrgUnit", "CreatedByUser")
+                        .WithMany("CorrespondenceActionsCreate")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Models.UserOrgUnit", "UpdatedByUser")
+                        .WithMany("CorrespondenceActionsUpdate")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
+                });
+
             modelBuilder.Entity("Domain.Models.CorrespondenceInbox", b =>
                 {
-                    b.HasOne("Domain.Models.Status", "Action")
-                        .WithMany("CorrespondenceInboxes")
-                        .HasForeignKey("ActionId")
-                        .HasConstraintName("FK_CorrespondenceInbox_Actions");
-
                     b.HasOne("Domain.Models.Correspondence", "Correspondence")
                         .WithMany("CorrespondenceInboxes")
                         .HasForeignKey("CorrespondenceId")
@@ -2692,6 +2713,11 @@ namespace Domain.Migrations
                         .HasForeignKey("ProcedureId")
                         .HasConstraintName("FK_CorrespondenceInbox_Procedures");
 
+                    b.HasOne("Domain.Models.Status", "Status")
+                        .WithMany("CorrespondenceInboxes")
+                        .HasForeignKey("StatusId")
+                        .HasConstraintName("FK_CorrespondenceInbox_Actions");
+
                     b.HasOne("Domain.Models.UserOrgUnit", "UpdatedByUser")
                         .WithMany("CorrespondenceInboxUpdate")
                         .HasForeignKey("UpdatedBy")
@@ -2703,8 +2729,6 @@ namespace Domain.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_CorrespondenceInbox_UserOrgUnit");
 
-                    b.Navigation("Action");
-
                     b.Navigation("Correspondence");
 
                     b.Navigation("CreatedByUser");
@@ -2713,9 +2737,36 @@ namespace Domain.Migrations
 
                     b.Navigation("Procedure");
 
+                    b.Navigation("Status");
+
                     b.Navigation("UpdatedByUser");
 
                     b.Navigation("UserOrgUnit");
+                });
+
+            modelBuilder.Entity("Domain.Models.CorrespondenceSubType", b =>
+                {
+                    b.HasOne("Domain.Models.CorrespondenceType", "CorrespondenceType")
+                        .WithMany("CorrespondenceSubTypes")
+                        .HasForeignKey("CorrespondenceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.UserOrgUnit", "CreatedByUser")
+                        .WithMany("CorrespondenceSubTypeCreate")
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Domain.Models.UserOrgUnit", "UpdatedByUser")
+                        .WithMany("CorrespondenceSubTypeUpdate")
+                        .HasForeignKey("UpdatedBy")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CorrespondenceType");
+
+                    b.Navigation("CreatedByUser");
+
+                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("Domain.Models.CorrespondenceTag", b =>
@@ -2759,18 +2810,12 @@ namespace Domain.Migrations
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Models.OrgUnit", "OrgUnitResponsibility")
-                        .WithMany("CorrespondenceTypes")
-                        .HasForeignKey("OrgUnitResponsibilityId");
-
                     b.HasOne("Domain.Models.UserOrgUnit", "UpdatedByUser")
                         .WithMany("CorrespondenceTypeUpdate")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("OrgUnitResponsibility");
 
                     b.Navigation("UpdatedByUser");
                 });
@@ -2865,23 +2910,6 @@ namespace Domain.Migrations
                     b.Navigation("UpdatedByUser");
 
                     b.Navigation("UserOrgUnit");
-                });
-
-            modelBuilder.Entity("Domain.Models.DecisionType", b =>
-                {
-                    b.HasOne("Domain.Models.UserOrgUnit", "CreatedByUser")
-                        .WithMany("DecisionTypeCreate")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Domain.Models.UserOrgUnit", "UpdatedByUser")
-                        .WithMany("DecisionTypeUpdate")
-                        .HasForeignKey("UpdatedBy")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("CreatedByUser");
-
-                    b.Navigation("UpdatedByUser");
                 });
 
             modelBuilder.Entity("Domain.Models.Delegate", b =>
@@ -3459,13 +3487,13 @@ namespace Domain.Migrations
                     b.Navigation("UpdatedByUser");
                 });
 
-            modelBuilder.Entity("Domain.Models.TemplateCorresponednceType", b =>
+            modelBuilder.Entity("Domain.Models.TemplateCorresponednceSubType", b =>
                 {
-                    b.HasOne("Domain.Models.CorrespondenceType", "CorresponednceType")
-                        .WithMany("TemplateCorresponednceTypes")
-                        .HasForeignKey("CorresponednceTypeId")
+                    b.HasOne("Domain.Models.CorrespondenceSubType", "CorrespondenceSubType")
+                        .WithMany("TemplateCorresponednceSubTypes")
+                        .HasForeignKey("CorrespondenceSubTypeId")
                         .IsRequired()
-                        .HasConstraintName("FK_TemplateCorresponednceTypes_CorrespondenceTypes");
+                        .HasConstraintName("FK_TemplateCorresponednceSubTypes_CorrespondenceTypes");
 
                     b.HasOne("Domain.Models.UserOrgUnit", "CreatedByUser")
                         .WithMany("TemplateCorresponednceTypeCreate")
@@ -3473,28 +3501,20 @@ namespace Domain.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.DecisionType", "DecisionType")
-                        .WithMany("TemplateCorresponednceTypes")
-                        .HasForeignKey("DecisionTypeId")
-                        .IsRequired()
-                        .HasConstraintName("FK_TemplateCorresponednceTypes_DecisionTypes");
-
                     b.HasOne("Domain.Models.Template", "Template")
-                        .WithMany("TemplateCorresponednceTypes")
+                        .WithMany("TemplateCorresponednceSubTypes")
                         .HasForeignKey("TemplateId")
                         .IsRequired()
-                        .HasConstraintName("FK_TemplateCorresponednceTypes_Templates");
+                        .HasConstraintName("FK_TemplateCorresponednceSubTypes_Templates");
 
                     b.HasOne("Domain.Models.UserOrgUnit", "UpdatedByUser")
                         .WithMany("TemplateCorresponednceTypeUpdate")
                         .HasForeignKey("UpdatedBy")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("CorresponednceType");
+                    b.Navigation("CorrespondenceSubType");
 
                     b.Navigation("CreatedByUser");
-
-                    b.Navigation("DecisionType");
 
                     b.Navigation("Template");
 
@@ -3849,18 +3869,16 @@ namespace Domain.Migrations
                     b.Navigation("Views");
                 });
 
-            modelBuilder.Entity("Domain.Models.CorrespondenceType", b =>
+            modelBuilder.Entity("Domain.Models.CorrespondenceSubType", b =>
                 {
                     b.Navigation("Correspondences");
 
-                    b.Navigation("TemplateCorresponednceTypes");
+                    b.Navigation("TemplateCorresponednceSubTypes");
                 });
 
-            modelBuilder.Entity("Domain.Models.DecisionType", b =>
+            modelBuilder.Entity("Domain.Models.CorrespondenceType", b =>
                 {
-                    b.Navigation("Correspondences");
-
-                    b.Navigation("TemplateCorresponednceTypes");
+                    b.Navigation("CorrespondenceSubTypes");
                 });
 
             modelBuilder.Entity("Domain.Models.Delegate", b =>
@@ -3889,8 +3907,6 @@ namespace Domain.Migrations
             modelBuilder.Entity("Domain.Models.OrgUnit", b =>
                 {
                     b.Navigation("ApprovalAuthorityExceptions");
-
-                    b.Navigation("CorrespondenceTypes");
 
                     b.Navigation("GroupDetails");
 
@@ -3956,7 +3972,7 @@ namespace Domain.Migrations
                 {
                     b.Navigation("Correspondences");
 
-                    b.Navigation("TemplateCorresponednceTypes");
+                    b.Navigation("TemplateCorresponednceSubTypes");
 
                     b.Navigation("TemplateOrgUnits");
 
@@ -3995,6 +4011,10 @@ namespace Domain.Migrations
 
                     b.Navigation("AttachementUpdate");
 
+                    b.Navigation("CorrespondenceActionsCreate");
+
+                    b.Navigation("CorrespondenceActionsUpdate");
+
                     b.Navigation("CorrespondenceCreate");
 
                     b.Navigation("CorrespondenceInboxCreate");
@@ -4004,6 +4024,10 @@ namespace Domain.Migrations
                     b.Navigation("CorrespondenceInboxUpdate");
 
                     b.Navigation("CorrespondenceInboxUserOrgUnits");
+
+                    b.Navigation("CorrespondenceSubTypeCreate");
+
+                    b.Navigation("CorrespondenceSubTypeUpdate");
 
                     b.Navigation("CorrespondenceTagCreate");
 
@@ -4026,10 +4050,6 @@ namespace Domain.Migrations
                     b.Navigation("CorrespondencesOutboxUpdate");
 
                     b.Navigation("CorrespondencesOutboxUserOrgUnits");
-
-                    b.Navigation("DecisionTypeCreate");
-
-                    b.Navigation("DecisionTypeUpdate");
 
                     b.Navigation("DelegateCreate");
 
